@@ -1,0 +1,23 @@
+services:
+  nginx:
+    image: nginx:1.28-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d:ro
+    depends_on:
+      - app-a
+      - app-b
+    restart: unless-stopped
+
+  app-a:
+    image: traefik/whoami:v1.11.0
+    environment:
+      WHOAMI_NAME: app-a
+    restart: unless-stopped
+
+  app-b:
+    image: traefik/whoami:v1.11.0
+    environment:
+      WHOAMI_NAME: app-b
+    restart: unless-stopped
